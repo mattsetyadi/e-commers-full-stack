@@ -30,19 +30,35 @@ app.use(express.json());
 // API routes
 app.get('/', (request, response) => response.status(200).send('Hello world'));
 
+// app.get('/payments/create', (request, response) => {
+//   const total = request.query.total;
+
+//   console.log('payment request received BOOM!! >>', total);
+
+//   const paymentIntent = stripe.paymentIntent.create({
+//     amount: total,
+//     currency: 'usd',
+//   });
+
 app.post('/payments/create', async (request, response) => {
   const total = request.query.total;
 
   console.log('payment request received BOOM!! >>', total);
 
-  const paymentIntent = await stripe.paymentIntent.create({
+  // const paymentIntent = await stripe.paymentIntent.create({
+  //   amount: total,
+  //   currency: 'usd',
+  // });
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    payment_method_types: ['card'],
     amount: total,
     currency: 'usd',
   });
 
   // type response 200=good 201=OK-created
   response.status(201).send({
-    clientSecreet: paymentIntent.client_secret,
+    clientSecret: paymentIntent.client_secret,
   });
 });
 

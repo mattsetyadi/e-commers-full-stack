@@ -1,11 +1,11 @@
-import React from "react";
-import "./Header.css";
-import LogoWb from "../assets/logo/logo_wb.svg";
-import SearchIcon from "@material-ui/icons/Search";
-import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-import { Link } from "react-router-dom";
-import { useStateValue } from "../StateProvider";
-import { auth } from "../firebase";
+import React from 'react';
+import './Header.css';
+import LogoWb from '../assets/logo/logo_wb.svg';
+import SearchIcon from '@material-ui/icons/Search';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import { Link } from 'react-router-dom';
+import { useStateValue } from '../StateProvider';
+import { auth } from '../firebase';
 
 const Header = () => {
   const [{ basket, user }, dispatch] = useStateValue();
@@ -32,20 +32,22 @@ const Header = () => {
       </div>
       <div className="header__nav">
         {/* jika hanya tidak ada user maka push ke login page */}
-        <Link to={!user && "/login"}>
+        <Link to={!user && '/login'}>
           <div onClick={handleAuthentication} className="header__option">
             <span className="header__optionLineOne">
-              Hi, {user ? user.email : "Guest"}
+              Hi, {user ? user.email : 'Guest'}
             </span>
             <span className="header__optionLineTwo">
-              {user ? "Sign Out" : "Sign In"}
+              {user ? 'Sign Out' : 'Sign In'}
             </span>
           </div>
         </Link>
-        <div className="header__option">
-          <span className="header__optionLineOne">Return</span>
-          <span className="header__optionLineTwo">& Orders</span>
-        </div>
+        <Link to="/orders">
+          <div className="header__option">
+            <span className="header__optionLineOne">Return</span>
+            <span className="header__optionLineTwo">& Orders</span>
+          </div>
+        </Link>
         <div className="header__option">
           <span className="header__optionLineOne">Your</span>
           <span className="header__optionLineTwo">Prime</span>

@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
-import "./App.css";
-import Header from "./Components/Header";
-import Home from "./Components/Home";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Checkout from "./Components/Checkout";
-import Login from "./Components/Login";
-import { auth } from "./firebase";
-import { useStateValue } from "./StateProvider";
-import Payment from "./Components/Payment";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
+import React, { useEffect } from 'react';
+import './App.css';
+import Header from './Components/Header';
+import Home from './Components/Home';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Checkout from './Components/Checkout';
+import Login from './Components/Login';
+import { auth } from './firebase';
+import { useStateValue } from './StateProvider';
+import Payment from './Components/Payment';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import Orders from './Components/Orders';
 
 const promise = loadStripe(
-  "pk_test_51HtUqyKwRSWgW3TK14RkNGBxm5QVg32NfXkwBu2R1WcU7b7Tl8Wtskvs1Z7Es6Ou4diI7w7mZsYBYQyKxQACp9Fc00tbJh5Prf",
+  'pk_test_51HtUqyKwRSWgW3TK14RkNGBxm5QVg32NfXkwBu2R1WcU7b7Tl8Wtskvs1Z7Es6Ou4diI7w7mZsYBYQyKxQACp9Fc00tbJh5Prf',
 );
 
 function App() {
@@ -25,14 +26,14 @@ function App() {
 
     // hanya refresh code ketika terjadi sign in user atau sign out
     auth.onAuthStateChanged((authUser) => {
-      console.log("USER LOGED IN IS >>>", authUser);
+      console.log('USER LOGED IN IS >>>', authUser);
 
       if (authUser) {
         // the user just logged in / was logged in (theres user log in)
 
         //we push data user to data layer (context api)
         dispatch({
-          type: "SET_USER", //key to push user to data layeer
+          type: 'SET_USER', //key to push user to data layeer
           user: authUser, //user we get them from authUser
         });
       } else {
@@ -40,7 +41,7 @@ function App() {
 
         //we remove user ferom dataLayer if they're logged out (back to null)
         dispatch({
-          type: "SET_USER",
+          type: 'SET_USER',
           user: null,
         });
       }
@@ -54,6 +55,10 @@ function App() {
         <Switch>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/orders">
+            <Header />
+            <Orders />
           </Route>
           <Route path="/payment">
             <Header />

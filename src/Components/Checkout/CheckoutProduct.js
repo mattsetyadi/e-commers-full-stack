@@ -1,15 +1,23 @@
-import React from "react";
-import { useStateValue } from "../../StateProvider";
-import "./CheckoutProduct.css";
+import React from 'react';
+import { useStateValue } from '../../StateProvider';
+import './CheckoutProduct.css';
 
 //props berkut yang akan di passing dan mengambil isinya dari basket
-const CheckoutProduct = ({ id, image, title, price, rating, alt }) => {
+const CheckoutProduct = ({
+  id,
+  image,
+  title,
+  price,
+  rating,
+  alt,
+  hideButton,
+}) => {
   const [{ basket }, dispatch] = useStateValue();
 
   const removeFromBasket = () => {
     //remove item from basket, using dispatch
     dispatch({
-      type: "REMOVE_FROM_BASKET",
+      type: 'REMOVE_FROM_BASKET',
       id: id,
     });
   };
@@ -30,7 +38,9 @@ const CheckoutProduct = ({ id, image, title, price, rating, alt }) => {
               <p>⭐</p>
             ))}
         </div>
-        <button onClick={removeFromBasket}>Remove from Basket</button>
+        {!hideButton && (
+          <button onClick={removeFromBasket}>Remove from Basket</button>
+        )}
       </div>
     </div>
   );

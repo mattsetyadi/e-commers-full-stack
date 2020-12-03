@@ -7,6 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from '../../axios';
 import './Payment.css';
+import { db } from '../../firebase';
 
 const Payment = () => {
   const [{ basket, user }, dispatch] = useStateValue();
@@ -53,10 +54,24 @@ const Payment = () => {
       .then(({ paymentIntent }) => {
         // paymentIntent = payment confirmation
 
+        db.collection('users')
+          .doc(user?.uid)
+          .collection('orders')
+          .doc(paymentIntent.id)
+          .set({
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+          });
+
         //if success or everything good
         setSucceeded(true);
         setError(null);
         setProcessing(false);
+
+        dispatch({
+          type: 'EMPTY_BASKET',
+        });
 
         // we don't wanna push here, so user sfer payment succeeded tey cant go back (replace that page-no history)
         history.replace('/orders');
